@@ -1,0 +1,8 @@
+auth:
+  existingSecret: "minio-custom-credentials"
+  ## @param auth.rootUserSecretKey Key where the MINIO_ROOT_USER username is being stored inside the existing secret `auth.existingSecret`
+  ##
+  rootUserSecretKey: "admin-key"
+  ## @param auth.rootPasswordSecretKey Key where the MINIO_ROOT_USER password is being stored inside the existing secret `auth.existingSecret`
+  ##
+  rootPasswordSecretKey: "password-key"
