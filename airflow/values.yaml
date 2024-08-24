@@ -1,0 +1,10 @@
+executor: "KubernetesExecutor"
+
+dags:
+  gitSync:
+    enabled: enabled
+    repo: https://github.com/muhammetbozkurt/MarketMiner.git
+    branch: main
+    rev: HEAD
+    ref: main
+    subPath: "airflow/dags"

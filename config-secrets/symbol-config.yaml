@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: symbol-config
+data:
+  config.json: |
+    {
+      "IS": ["YKBNK", "EREGL"],
+      "NASDAQ": ["NVDA"]
+    }
