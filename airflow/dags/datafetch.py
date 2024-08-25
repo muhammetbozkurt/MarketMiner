@@ -1,22 +1,22 @@
-# write a DAG to fetch data from yfinance and save it to MinIO
-
 from datetime import datetime, timedelta
 from airflow.models import DAG
 from airflow.operators.python_operator import PythonOperator
 from kubernetes.client import models as k8s
 import json
-import io
 import logging
-import yfinance as yf
-import pandas as pd
-import os
-import boto3
+
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
 def fetch_and_save_data():
+    import yfinance as yf
+    import pandas as pd
+    import os
+    import boto3
+    import io
+
     ACCESS_KEY = os.getenv("ACCESS KEY")
     ACCESS_SECRET = os.getenv("ACCESS_SECRET")
     OBJECT_STORAGE_URL = os.getenv("OBJECT_STORAGE_URL", "minio.default.svc.cluster.local:9000")
@@ -103,7 +103,7 @@ fetch_data_task = PythonOperator(
                 containers=[
                     k8s.V1Container(
                         name="base",
-                        image="python:3.11",
+                        image="custom-image:1.0.0",
                         volume_mounts=[
                             k8s.V1VolumeMount(
                                 name="config-volume", mount_path="/configs/config.json", sub_path="config.json"
@@ -137,4 +137,4 @@ fetch_data_task = PythonOperator(
 )
 
 
-fetch_data
+fetch_data_task
