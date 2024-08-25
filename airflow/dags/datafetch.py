@@ -1,9 +1,8 @@
 # write a DAG to fetch data from yfinance and save it to MinIO
 
 from datetime import datetime, timedelta
-from airflow import DAG
-from airflow.dags import PythonOperator
-from airflow.dags import BaseHook
+from airflow.models import DAG
+from airflow.operators.python_operator import PythonOperator
 from kubernetes.client import models as k8s
 import json
 import io
@@ -71,11 +70,6 @@ def fetch_and_save_data():
                 logger.error(f"Error fetching data for {ticker}: {e}")
 
 
-def fetch_data(**kwargs):
-    minio_client = BaseHook.get_connection("minio").extra_dejson
-    fetch_and_save_data("/configs/config.json", minio_client)
-
-
 dag = DAG(
     "datafetch",
     default_args={
@@ -95,7 +89,7 @@ dag = DAG(
 # Task to fetch data
 fetch_data_task = PythonOperator(
     task_id="fetch_data",
-    python_callable=fetch_data,
+    python_callable=fetch_and_save_data,
     dag=dag,
     executor_config={
         "pod_override": k8s.V1Pod(
