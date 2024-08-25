@@ -17,7 +17,7 @@ def fetch_and_save_data():
     import boto3
     import io
 
-    ACCESS_KEY = os.getenv("ACCESS KEY")
+    ACCESS_KEY = os.getenv("ACCESS_KEY")
     ACCESS_SECRET = os.getenv("ACCESS_SECRET")
     OBJECT_STORAGE_URL = os.getenv("OBJECT_STORAGE_URL", "minio.default.svc.cluster.local:9000")
     config_file = "/configs/config.json"
