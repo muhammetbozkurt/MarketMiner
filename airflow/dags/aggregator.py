@@ -9,6 +9,7 @@ import json
 import os
 
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
+from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 ACCESS_KEY = os.getenv("ACCESS_KEY")
 ACCESS_SECRET = os.getenv("ACCESS_SECRET")
@@ -37,16 +38,21 @@ with DAG(
     catchup=False,
 ) as dag:
     
-    pyspark_task = SparkSubmitOperator(
+    pyspark_task = KubernetesPodOperator(
         task_id='pyspark_submit_task',
-        application="/spark/src/pyspark_script.py",
-        conn_id='k8s://https://kubernetes.default.svc.cluster.local:443',
-        conf={
-            'spark.kubernetes.container.image': 'custom-spark:1.0.0',
-            'spark.kubernetes.namespace': 'default',
-            'spark.executor.instances': '2',
-            'spark.executor.memory': '2g',
-            'spark.executor.cores': '1',
-            'spark.master': 'k8s://https://kubernetes.default.svc.cluster.local:443',
-        },
+        name='pyspark-submit-task',
+        namespace='default',
+        image='custom-spark:1.0.0',
+        cmds=['spark-submit'],
+        arguments=[
+            '--master', 'k8s://https://kubernetes.default.svc.cluster.local:443',
+            '--deploy-mode', 'cluster',
+            '--executor-memory', '2g',
+            '--executor-cores', '1',
+            '--num-executors', '2',
+            '--conf', 'spark.kubernetes.namespace=default',
+            '--conf', 'spark.kubernetes.container.image=custom-spark:1.0.0',
+            '/spark/src/pyspark_script.py'
+        ],
+        get_logs=True
     )
