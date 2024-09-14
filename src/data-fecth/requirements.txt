@@ -1,6 +1,0 @@
-pandas
-boto3
-yfinance
-argparse
-spark
-kubernetes
