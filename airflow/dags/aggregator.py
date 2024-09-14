@@ -9,7 +9,7 @@ import json
 import os
 
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
-
+from airflow.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 ACCESS_KEY = os.getenv("ACCESS_KEY")
 ACCESS_SECRET = os.getenv("ACCESS_SECRET")
@@ -40,20 +40,13 @@ with DAG(
     
     pyspark_task = SparkSubmitOperator(
         task_id='pyspark_submit_task',
-        application="/include/pyspark_script.py",
-        conn_id="spark_default",
-        executor_cores=1,
-        executor_memory="512m",
-        num_executors=1,
-        name="pyspark_submit_task",
-        verbose=True,
-        env_vars={
-            "ACCESS_KEY": ACCESS_KEY,
-            "ACCESS_SECRET": ACCESS_SECRET,
-            "OBJECT_STORAGE_URL": OBJECT_STORAGE_URL,
-            "POSTGRES_HOST": POSTGRES_HOST,
-            "POSTGRES_USER": POSTGRES_USER,
-            "POSTGRES_PASSWORD": POSTGRES_PASSWORD,
-            "POSTGRES_DB": POSTGRES_DB,
-        }
+        application="/spark/src/pyspark_script.py",
+        conn_id='spark_default',
+        conf={
+            'spark.kubernetes.container.image': 'custom-spark:1.0.0',
+            'spark.kubernetes.namespace': 'default',
+            'spark.executor.instances': '2',
+            'spark.executor.memory': '2g',
+            'spark.executor.cores': '1'
+        },
     )
