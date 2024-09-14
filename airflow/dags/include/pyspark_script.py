@@ -21,8 +21,8 @@ spark = SparkSession.builder.appName("StockMarketAnalysis").getOrCreate()
 
 hadoopConf = spark.sparkContext._jsc.hadoopConfiguration()
 hadoopConf.set("fs.s3a.endpoint", OBJECT_STORAGE_URL)
-hadoopConf.set("fs.s3a.access.key", ACCESS_KEY)
-hadoopConf.set("fs.s3a.secret.key", ACCESS_SECRET)
+hadoopConf.set("fs.s3a.access.key", "admin")
+hadoopConf.set("fs.s3a.secret.key", "minio123")
 
 config_file = "/configs/config.json"
 
@@ -66,10 +66,10 @@ for market, symbols in config.items():
 
 
             # Save the results to PostgreSQL
-            url = "jdbc:postgresql://localhost:5432/mydatabase"
+            url = "jdbc:postgresql://postgresql:5432/postgres"
             properties = {
-                "user": "myuser",
-                "password": "mypassword",
+                "user": "admin",
+                "password": "bDj3QNn3Ha",
                 "driver": "org.postgresql.Driver",
             }
 
