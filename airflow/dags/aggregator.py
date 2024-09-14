@@ -40,8 +40,7 @@ with DAG(
     pyspark_task = SparkSubmitOperator(
         task_id='pyspark_submit_task',
         application="/spark/src/pyspark_script.py",
-        conn_id='spark_default',
-        master='k8s://https://kubernetes.default.svc.cluster.local:443',
+        # conn_id='spark_default',
         conf={
             'spark.kubernetes.container.image': 'custom-spark:1.0.0',
             'spark.kubernetes.namespace': 'default',
