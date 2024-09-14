@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 from airflow.models import DAG
 from airflow.operators.python_operator import PythonOperator
-from loguru import logger
 from kubernetes.client import models as k8s
 import json
 
@@ -14,6 +13,7 @@ def fetch_and_save_data():
     import os
     import boto3
     import io
+    from loguru import logger
 
     ACCESS_KEY = os.getenv("ACCESS_KEY")
     ACCESS_SECRET = os.getenv("ACCESS_SECRET")

@@ -6,7 +6,6 @@ from airflow.models import DAG
 from airflow.operators.python_operator import PythonOperator
 from kubernetes.client import models as k8s
 import json
-from loguru import logger
 import os
 
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
