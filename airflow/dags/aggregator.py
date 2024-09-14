@@ -46,6 +46,7 @@ with DAG(
             'spark.kubernetes.namespace': 'default',
             'spark.executor.instances': '2',
             'spark.executor.memory': '2g',
-            'spark.executor.cores': '1'
+            'spark.executor.cores': '1',
+            'spark.master': 'k8s://https://kubernetes.default.svc.cluster.local:443',
         },
     )
