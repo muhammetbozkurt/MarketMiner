@@ -9,7 +9,6 @@ import json
 import os
 
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
-from airflow.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 ACCESS_KEY = os.getenv("ACCESS_KEY")
 ACCESS_SECRET = os.getenv("ACCESS_SECRET")
