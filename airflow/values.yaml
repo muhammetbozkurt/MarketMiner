@@ -1,8 +1,9 @@
 executor: "KubernetesExecutor"
 
+webserverSecretKeySecretName: my-webserver-secret
 dags:
   gitSync:
-    enabled: enabled
+    enabled: true
     repo: https://github.com/muhammetbozkurt/MarketMiner.git
     branch: main
     rev: HEAD

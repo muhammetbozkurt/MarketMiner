@@ -1,13 +1,11 @@
 from datetime import datetime, timedelta
 from airflow.models import DAG
 from airflow.operators.python_operator import PythonOperator
+from loguru import logger
 from kubernetes.client import models as k8s
 import json
-import logging
 
 
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
 
 
 def fetch_and_save_data():
@@ -79,10 +77,12 @@ dag = DAG(
         "email_on_retry": False,
         "retries": 1,
         "retry_delay": timedelta(minutes=5),
+        "catchup": False,
+
     },
     description="Fetch data from yfinance and save to MinIO",
     schedule_interval=timedelta(days=1),
-    start_date=datetime(2021, 1, 1),
+    start_date=datetime(2024, 9, 8),
     catchup=False,
 )
 
